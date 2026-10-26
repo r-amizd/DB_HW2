@@ -475,54 +475,54 @@ $(function(){
         }
     });
 
-    $("#btnRunSim").on("click", async () => {
-        feed = $("#simLogContainer");
-        feed.empty();
-        feed.append("<p>Beginning Simulation...</p>");
+    // $("#btnRunSim").on("click", async () => {
+    //     feed = $("#simLogContainer");
+    //     feed.empty();
+    //     feed.append("<p>Beginning Simulation...</p>");
 
-        storeIdVal = $("#simStoreId").val();
-        custIdVal = $("#simCustId").val();
-        accountIdVal = $("simAcctId").val();
+    //     storeIdVal = $("#simStoreId").val();
+    //     custIdVal = $("#simCustId").val();
+    //     accountIdVal = $("simAcctId").val();
 
-        payload = {
-            store_id: storeIdVal ? parseInt(storeIdVal, 10) : 1,
-            customer_id: custIdVal ? parseInt(cusIdVal, 10) : null,
-            account_id: accountIdVal ? parseInt(accountIdVal, 10) : null
-        };
+    //     payload = {
+    //         store_id: storeIdVal ? parseInt(storeIdVal, 10) : 1,
+    //         customer_id: custIdVal ? parseInt(cusIdVal, 10) : null,
+    //         account_id: accountIdVal ? parseInt(accountIdVal, 10) : null
+    //     };
 
-        try{
-            const res = await sendRequest("simulation/checkout", "POST", payload);
-            feed.empty();
+    //     try{
+    //         const res = await sendRequest("simulation/checkout", "POST", payload);
+    //         feed.empty();
 
-            if(!res.simulations || res.simulations.length === 0){
-                feed.append("<p>No transactions generated</p>");
-                return;
-            }
+    //         if(!res.simulations || res.simulations.length === 0){
+    //             feed.append("<p>No transactions generated</p>");
+    //             return;
+    //         }
 
-            res.simulations.forEach((sim, idx) => {
-                isErr = !sim.success;
-                card = $("<div>", {class: `simCard ${isErr ? "error" : ""}`}); 
-                card.append(`<h4>Tx #${idx + 1}: Customer ${sim.customer_id} (${sim.payment_method.toUpperCase()})</h4>`);
+    //         res.simulations.forEach((sim, idx) => {
+    //             isErr = !sim.success;
+    //             card = $("<div>", {class: `simCard ${isErr ? "error" : ""}`}); 
+    //             card.append(`<h4>Tx #${idx + 1}: Customer ${sim.customer_id} (${sim.payment_method.toUpperCase()})</h4>`);
 
-                if(isErr)
-                    card.append(`<p style="color:red; margin:0;"><strong>ABORTED/ROLLED BACK:</strong> ${sim.error}</p>`);
-                else{
-                    const $ul =$("<ul>");
-                    sim.items.forEach((it) => {
-                        $ul.append(`<li>${it.sku} - ${it.name} | Qty: ${it.quantity} @ $${it.unit_price} (Tax: $${it.tax_amount})</li>`);
-                    });
-                    card.append($ul);
-                    card.append(`<div><strong>Subtotal:</strong> $${sim.subtotal} | <strong>Total Paid:</strong> $${sim.total}</div>`);
-                    if (sim.account_id) {
-                        card.append(`<div class="muted">Charged to Bank Account ID: ${sim.account_id}</div>`);
-                    }
-                }
-                feed.append(card);
-            });
-        } catch (err){
-            feed.html(`<p style="color:red;">Simulation Engine Failed: ${err.message}</p>`);
-        }
-    });
+    //             if(isErr)
+    //                 card.append(`<p style="color:red; margin:0;"><strong>ABORTED/ROLLED BACK:</strong> ${sim.error}</p>`);
+    //             else{
+    //                 const $ul =$("<ul>");
+    //                 sim.items.forEach((it) => {
+    //                     $ul.append(`<li>${it.sku} - ${it.name} | Qty: ${it.quantity} @ $${it.unit_price} (Tax: $${it.tax_amount})</li>`);
+    //                 });
+    //                 card.append($ul);
+    //                 card.append(`<div><strong>Subtotal:</strong> $${sim.subtotal} | <strong>Total Paid:</strong> $${sim.total}</div>`);
+    //                 if (sim.account_id) {
+    //                     card.append(`<div class="muted">Charged to Bank Account ID: ${sim.account_id}</div>`);
+    //                 }
+    //             }
+    //             feed.append(card);
+    //         });
+    //     } catch (err){
+    //         feed.html(`<p style="color:red;">Simulation Engine Failed: ${err.message}</p>`);
+    //     }
+    // });
 
     //--Analytical Report Views
 
